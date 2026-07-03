@@ -16,7 +16,7 @@ git clone [--template=<template-directory>]
 	  [--depth <depth>] [--[no-]single-branch] [--[no-]tags]
 	  [--recurse-submodules[=<pathspec>]] [--[no-]shallow-submodules]
 	  [--[no-]remote-submodules] [--jobs <n>] [--sparse] [--[no-]reject-shallow]
-	  [--filter=<filter-spec> [--also-filter-submodules]] [--] <repository>
+	  [--filter=<filter-spec> [--also-filter-submodules]] [--bot] [--] <repository>
 	  [<directory>]
 
 DESCRIPTION
@@ -133,6 +133,12 @@ objects from the source repository into a pack in the cloned repository.
 `--quiet`::
 	Operate quietly.  Progress is not reported to the standard
 	error stream.
+
+`--bot`::
+	Optimize for automated/bot use: suppress all output (implies `--quiet`)
+	and disable terminal prompts for credentials by setting
+	`GIT_TERMINAL_PROMPT=0`. This is useful for CI/CD pipelines and
+	scripts where no user interaction is possible.
 
 `-v`::
 `--verbose`::
