@@ -23,6 +23,9 @@ GITWEB_STRICT_EXPORT =
 GITWEB_BASE_URL =
 GITWEB_LIST =
 GITWEB_HOMETEXT = indextext.html
+# Default stylesheet. To use the premium dark theme instead, override at build time:
+#   make GITWEB_CSS_IN=static/gitweb-premium.css
+# Alternatively, set $stylesheet in gitweb_config.perl at runtime (no rebuild needed).
 GITWEB_CSS_IN = static/gitweb.css
 GITWEB_CSS = $(GITWEB_CSS_IN)
 GITWEB_LOGO = static/git-logo.png

@@ -1,6 +1,28 @@
 /*
  * gitweb-premium.css — Premium dark theme for gitweb.
  * Free to use, no registration or payment required.
+ *
+ * HOW TO ACTIVATE THIS THEME
+ * ===========================
+ *
+ * Option A — Build-time (replaces default stylesheet permanently):
+ *
+ *   make GITWEB_CSS_IN=static/gitweb-premium.css \
+ *        NO_GETTEXT=YesPlease NO_CURL=YesPlease
+ *
+ * Option B — Runtime via gitweb_config.perl (no rebuild needed):
+ *
+ *   Add the following line to your gitweb_config.perl:
+ *
+ *     our $stylesheet = "static/gitweb-premium.css";
+ *
+ *   Or, to load it in addition to the default stylesheet:
+ *
+ *     push @stylesheets, "static/gitweb-premium.css";
+ *
+ * Option C — System-wide via /etc/gitweb.conf:
+ *
+ *   our $stylesheet = "/path/to/gitweb/static/gitweb-premium.css";
  */
 
 /* ── Design tokens ─────────────────────────────────────────── */
