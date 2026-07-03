@@ -64,6 +64,7 @@ endif
 GITWEB_FILES += $(GITWEB_CSS)
 
 GITWEB_FILES += static/git-logo.png static/git-favicon.png
+GITWEB_FILES += static/gitweb-premium.css
 
 # JavaScript files that are composed (concatenated) to form gitweb.js
 #

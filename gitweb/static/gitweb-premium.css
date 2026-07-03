@@ -1,0 +1,920 @@
+/*
+ * gitweb-premium.css — Premium dark theme for gitweb.
+ * Free to use, no registration or payment required.
+ */
+
+/* ── Design tokens ─────────────────────────────────────────── */
+:root {
+	--bg:          #0d1117;
+	--surface:     #161b22;
+	--surface2:    #1c2230;
+	--border:      #30363d;
+	--text:        #e6edf3;
+	--muted:       #8b949e;
+	--accent:      #58a6ff;
+	--accent-dim:  rgba(88, 166, 255, 0.12);
+	--add:         #3fb950;
+	--add-bg:      #0d1f12;
+	--add-mark:    #1a4226;
+	--rem:         #f85149;
+	--rem-bg:      #1f0d0d;
+	--rem-mark:    #4a1818;
+	--chunk:       #bc8cff;
+	--chunk-bg:    #1a1030;
+	--tag-bg:      #1a2f4a;
+	--tag-border:  #2a4a6a;
+	--head-bg:     #122212;
+	--head-border: #1e3a1e;
+	--ref-bg:      #1a1f3a;
+	--ref-border:  #2a3060;
+	--hover:       #1f2937;
+	--radius:      6px;
+	--shadow:      0 1px 3px rgba(0,0,0,0.5);
+}
+
+/* ── Base ───────────────────────────────────────────────────── */
+*, *::before, *::after {
+	box-sizing: border-box;
+}
+
+html {
+	scroll-behavior: smooth;
+}
+
+body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans",
+	             Helvetica, Arial, sans-serif;
+	font-size: 14px;
+	line-height: 1.6;
+	color: var(--text);
+	background-color: var(--bg);
+	border: none;
+	margin: 0;
+	padding: 0;
+}
+
+a {
+	color: var(--accent);
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:visited {
+	color: var(--accent);
+}
+
+a:active {
+	color: var(--accent);
+}
+
+/* ── Page layout wrapper ────────────────────────────────────── */
+div.page_header,
+div.page_nav,
+div.page_path,
+div.page_footer,
+div.page_body,
+div.title,
+div.list_head,
+div.author_date,
+div.title_text,
+div.log_body,
+div.readme,
+div.index_include,
+div.search,
+div.projsearch,
+div.remote {
+	margin: 0;
+}
+
+/* ── Header ─────────────────────────────────────────────────── */
+div.page_header {
+	height: auto;
+	padding: 12px 20px;
+	font-size: 115%;
+	font-weight: 600;
+	background-color: var(--surface);
+	border-bottom: 1px solid var(--border);
+	box-shadow: var(--shadow);
+}
+
+div.page_header a:visited,
+a.header {
+	color: var(--accent);
+}
+
+div.page_header a:hover {
+	color: #79c0ff;
+	text-decoration: underline;
+}
+
+img.logo {
+	float: right;
+	border-width: 0;
+	opacity: 0.85;
+}
+
+img.avatar {
+	vertical-align: middle;
+	border-radius: 50%;
+}
+
+img.blob {
+	max-height: 100%;
+	max-width: 100%;
+}
+
+/* ── Nav bar ────────────────────────────────────────────────── */
+div.page_nav {
+	padding: 8px 20px;
+	background-color: var(--surface);
+	border-bottom: 1px solid var(--border);
+	font-size: 13px;
+}
+
+div.page_nav a {
+	color: var(--muted);
+	margin-right: 4px;
+}
+
+div.page_nav a:hover {
+	color: var(--text);
+}
+
+div.page_nav a:visited {
+	color: var(--muted);
+}
+
+/* ── Path breadcrumb ────────────────────────────────────────── */
+div.page_path {
+	padding: 8px 20px;
+	font-weight: 600;
+	background-color: var(--surface2);
+	border-bottom: 1px solid var(--border);
+	font-size: 13px;
+	color: var(--muted);
+}
+
+/* ── Footer ─────────────────────────────────────────────────── */
+div.page_footer {
+	height: auto;
+	padding: 10px 20px;
+	background-color: var(--surface);
+	border-top: 1px solid var(--border);
+	font-size: 12px;
+}
+
+div.page_footer_text {
+	line-height: 22px;
+	float: left;
+	color: var(--muted);
+	font-style: italic;
+}
+
+div#generating_info {
+	margin: 6px 20px;
+	font-size: 11px;
+	text-align: center;
+	color: var(--muted);
+}
+
+/* ── Body ───────────────────────────────────────────────────── */
+div.page_body {
+	padding: 16px 20px;
+	font-family: ui-monospace, "SFMono-Regular", "SF Mono", Menlo, Consolas,
+	             "Liberation Mono", monospace;
+	font-size: 12px;
+	background-color: var(--bg);
+}
+
+div.readme {
+	padding: 16px 20px;
+	font-family: inherit;
+	font-size: 14px;
+}
+
+/* ── Titles ─────────────────────────────────────────────────── */
+div.title,
+a.title {
+	display: block;
+	padding: 8px 20px;
+	font-weight: 600;
+	font-size: 13px;
+	background-color: var(--surface2);
+	border-bottom: 1px solid var(--border);
+	text-decoration: none;
+	color: var(--text);
+}
+
+a.title:hover {
+	background-color: var(--hover);
+	text-decoration: none;
+}
+
+div.title_text {
+	padding: 8px 20px;
+	border-bottom: 1px solid var(--border);
+	font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+	font-size: 12px;
+	color: var(--muted);
+}
+
+/* ── Log ────────────────────────────────────────────────────── */
+div.log_body {
+	padding: 8px 20px 8px 160px;
+}
+
+span.age {
+	position: relative;
+	float: left;
+	width: 150px;
+	font-style: italic;
+	color: var(--muted);
+	font-size: 12px;
+}
+
+span.signoff {
+	color: var(--muted);
+}
+
+div.log_link {
+	padding: 0 8px;
+	font-size: 11px;
+	font-family: sans-serif;
+	font-style: normal;
+	position: relative;
+	float: left;
+	width: 142px;
+}
+
+div.log_link a {
+	color: var(--muted);
+}
+
+div.log_link a:hover {
+	color: var(--accent);
+}
+
+/* ── List head ──────────────────────────────────────────────── */
+div.list_head {
+	padding: 6px 20px;
+	border-top: 1px solid var(--border);
+	font-style: italic;
+	color: var(--muted);
+	font-size: 12px;
+	background-color: var(--surface2);
+}
+
+/* ── Author / date ──────────────────────────────────────────── */
+.author_date,
+.author {
+	font-style: italic;
+	color: var(--muted);
+}
+
+div.author_date {
+	padding: 8px 20px;
+	border-bottom: 1px solid var(--border);
+	background-color: var(--surface2);
+}
+
+/* ── Links ──────────────────────────────────────────────────── */
+a.list {
+	text-decoration: none;
+	color: var(--text);
+}
+
+a.subject,
+a.name {
+	font-weight: 600;
+	color: var(--accent);
+}
+
+table.tags a.subject {
+	font-weight: normal;
+	color: var(--text);
+}
+
+a.list:hover {
+	text-decoration: underline;
+	color: var(--accent);
+}
+
+a.text {
+	text-decoration: none;
+	color: var(--accent);
+}
+
+a.text:visited {
+	color: var(--accent);
+}
+
+a.text:hover {
+	text-decoration: underline;
+}
+
+/* ── Tables ─────────────────────────────────────────────────── */
+table {
+	padding: 0;
+	border-spacing: 0;
+	width: 100%;
+}
+
+table.diff_tree {
+	font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+table.combined.diff_tree th {
+	text-align: center;
+}
+
+table.combined.diff_tree td {
+	padding-right: 24px;
+}
+
+table.combined.diff_tree th.link,
+table.combined.diff_tree td.link {
+	padding: 0 4px;
+}
+
+table.combined.diff_tree td.nochange a {
+	color: var(--muted);
+}
+
+table.combined.diff_tree td.nochange a:hover {
+	color: var(--text);
+}
+
+table.blame {
+	border-collapse: collapse;
+}
+
+table.blame td {
+	padding: 0 5px;
+	font-size: 12px;
+	vertical-align: top;
+}
+
+th {
+	padding: 6px 10px;
+	font-size: 12px;
+	text-align: left;
+	font-weight: 600;
+	color: var(--muted);
+	background-color: var(--surface2);
+	border-bottom: 1px solid var(--border);
+}
+
+/* Table row alternation */
+tr.light,
+table.blame .light:hover {
+	background-color: var(--bg);
+}
+
+tr.dark,
+table.blame .dark:hover {
+	background-color: var(--surface);
+}
+
+tr.light:hover,
+tr.dark:hover {
+	background-color: var(--hover);
+}
+
+/* boundary commits in 'blame' view */
+tr.boundary td.sha1,
+tr.no-previous td.linenr {
+	font-weight: bold;
+}
+
+/* for 'blame_incremental', during processing */
+tr.color1 { background-color: #0d1a0d; }
+tr.color2 { background-color: #0d0d1a; }
+tr.color3 { background-color: #1a0d0d; }
+
+td {
+	padding: 4px 10px;
+	font-size: 13px;
+	vertical-align: top;
+	border-bottom: 1px solid var(--border);
+}
+
+td.link,
+td.selflink {
+	padding: 4px 8px;
+	font-family: sans-serif;
+	font-size: 11px;
+}
+
+td.selflink {
+	padding-right: 0;
+}
+
+td.sha1 {
+	font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+	font-size: 12px;
+	color: var(--muted);
+}
+
+/* ── Errors ─────────────────────────────────────────────────── */
+.error {
+	color: var(--rem);
+	background-color: var(--rem-bg);
+	border: 1px solid var(--rem);
+	border-radius: var(--radius);
+	padding: 4px 10px;
+}
+
+/* ── Category cells ─────────────────────────────────────────── */
+td.current_head {
+	text-decoration: underline;
+	color: var(--accent);
+}
+
+td.category {
+	background-color: var(--surface2);
+	border-top: 1px solid var(--border);
+	border-left: 1px solid var(--border);
+	font-weight: 600;
+	color: var(--muted);
+	font-size: 12px;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+}
+
+/* ── File status in diff tree ───────────────────────────────── */
+table.diff_tree span.file_status.new {
+	color: var(--add);
+}
+
+table.diff_tree span.file_status.deleted {
+	color: var(--rem);
+}
+
+table.diff_tree span.file_status.moved,
+table.diff_tree span.file_status.mode_chnge {
+	color: var(--muted);
+}
+
+table.diff_tree span.file_status.copied {
+	color: #4ac26b;
+}
+
+/* ── Age columns ─────────────────────────────────────────────── */
+table.project_list td.noage {
+	color: var(--muted);
+	font-style: italic;
+}
+
+table.project_list td.age2,
+table.blame td.age2 {
+	font-style: italic;
+	color: var(--muted);
+}
+
+table.project_list td.age1 {
+	color: #3fb950;
+	font-style: italic;
+}
+
+table.blame td.age1 {
+	color: #3fb950;
+	background: transparent;
+}
+
+table.project_list td.age0 {
+	color: #56d364;
+	font-style: italic;
+	font-weight: bold;
+}
+
+table.blame td.age0 {
+	color: #56d364;
+	background: transparent;
+	font-weight: bold;
+}
+
+/* ── Monospace pre ───────────────────────────────────────────── */
+td.pre,
+div.pre,
+div.diff {
+	font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+	font-size: 12px;
+	white-space: pre;
+}
+
+td.mode {
+	font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+	font-size: 12px;
+	color: var(--muted);
+}
+
+/* ── Progress bar (blame_incremental) ───────────────────────── */
+div#progress_bar {
+	height: 3px;
+	margin-bottom: -3px;
+	background-color: var(--accent);
+	border-radius: 2px;
+}
+
+div#progress_info {
+	float: right;
+	text-align: right;
+	font-size: 11px;
+	color: var(--muted);
+}
+
+/* ── Tree size column ────────────────────────────────────────── */
+td.size {
+	font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+	font-size: 12px;
+	text-align: right;
+	color: var(--muted);
+}
+
+/* ── Diff views ──────────────────────────────────────────────── */
+div.diff.header,
+div.diff.extended_header {
+	white-space: normal;
+}
+
+div.diff.header {
+	font-weight: 600;
+	background-color: var(--surface2);
+	margin-top: 8px;
+	padding: 6px 12px;
+	border: 1px solid var(--border);
+	border-radius: var(--radius) var(--radius) 0 0;
+}
+
+div.diff.header a.path {
+	text-decoration: underline;
+	color: var(--accent);
+}
+
+div.diff.extended_header,
+div.diff.extended_header a.path,
+div.diff.extended_header a.hash {
+	color: var(--muted);
+}
+
+div.diff.extended_header .info {
+	color: var(--muted);
+	opacity: 0.6;
+}
+
+div.diff.extended_header {
+	background-color: var(--surface);
+	padding: 4px 12px;
+	border-left: 1px solid var(--border);
+	border-right: 1px solid var(--border);
+}
+
+div.diff a.list,
+div.diff a.path,
+div.diff a.hash {
+	text-decoration: none;
+}
+
+div.diff a.list:hover,
+div.diff a.path:hover,
+div.diff a.hash:hover {
+	text-decoration: underline;
+}
+
+div.diff.to_file a.path,
+div.diff.to_file {
+	color: var(--add);
+}
+
+div.diff.add {
+	color: var(--add);
+	background-color: var(--add-bg);
+}
+
+div.diff.add span.marked {
+	background-color: var(--add-mark);
+}
+
+div.diff.from_file a.path,
+div.diff.from_file {
+	color: var(--rem);
+}
+
+div.diff.rem {
+	color: var(--rem);
+	background-color: var(--rem-bg);
+}
+
+div.diff.rem span.marked {
+	background-color: var(--rem-mark);
+}
+
+div.diff.chunk_header a,
+div.diff.chunk_header {
+	color: var(--chunk);
+}
+
+div.diff.chunk_header {
+	border-top: 1px solid var(--border);
+	background-color: var(--chunk-bg);
+	margin-top: 2px;
+}
+
+div.diff.chunk_header span.chunk_info {
+	background-color: transparent;
+	font-weight: 600;
+}
+
+div.diff.chunk_header span.section {
+	color: var(--chunk);
+	opacity: 0.75;
+}
+
+div.diff.incomplete {
+	color: var(--muted);
+}
+
+div.diff.nodifferences {
+	font-weight: 600;
+	color: var(--muted);
+}
+
+/* ── Side-by-side diff ───────────────────────────────────────── */
+div.chunk_block {
+	overflow: hidden;
+}
+
+div.chunk_block div.old {
+	float: left;
+	width: 50%;
+	overflow: hidden;
+}
+
+div.chunk_block div.new {
+	margin-left: 50%;
+	width: 50%;
+}
+
+div.chunk_block.rem div.old div.diff.rem {
+	background-color: var(--rem-bg);
+}
+
+div.chunk_block.add div.new div.diff.add {
+	background-color: var(--add-bg);
+}
+
+div.chunk_block.chg div div.diff {
+	background-color: #1a1a0d;
+}
+
+div.chunk_block.ctx div div.diff.ctx {
+	color: var(--muted);
+}
+
+/* ── Index include ───────────────────────────────────────────── */
+div.index_include {
+	border-bottom: 1px solid var(--border);
+	padding: 12px 20px;
+	color: var(--muted);
+	font-size: 13px;
+}
+
+/* ── Search ──────────────────────────────────────────────────── */
+div.search {
+	font-size: 13px;
+	font-weight: normal;
+	margin: 6px 20px;
+	float: right;
+}
+
+div.search input[type="text"] {
+	padding: 4px 10px;
+	border: 1px solid var(--border);
+	border-radius: var(--radius);
+	background-color: var(--surface2);
+	color: var(--text);
+	font-size: 13px;
+}
+
+div.search input[type="text"]:focus {
+	outline: none;
+	border-color: var(--accent);
+	box-shadow: 0 0 0 2px var(--accent-dim);
+}
+
+div.projsearch {
+	text-align: center;
+	margin: 24px 0;
+}
+
+div.projsearch form {
+	margin-bottom: 8px;
+}
+
+div.projsearch input[type="text"] {
+	padding: 8px 14px;
+	border: 1px solid var(--border);
+	border-radius: var(--radius);
+	background-color: var(--surface2);
+	color: var(--text);
+	font-size: 14px;
+	min-width: 260px;
+}
+
+div.projsearch input[type="submit"] {
+	padding: 8px 18px;
+	margin-left: 6px;
+	border: none;
+	border-radius: var(--radius);
+	background-color: var(--accent);
+	color: #0d1117;
+	font-weight: 700;
+	font-size: 13px;
+	cursor: pointer;
+	transition: opacity 0.15s ease;
+}
+
+div.projsearch input[type="submit"]:hover {
+	opacity: 0.85;
+}
+
+/* ── Line numbers ────────────────────────────────────────────── */
+td.linenr {
+	text-align: right;
+	border-right: 1px solid var(--border);
+	color: var(--muted);
+	user-select: none;
+}
+
+a.linenr {
+	color: var(--muted);
+	text-decoration: none;
+	font-size: 12px;
+}
+
+a.linenr:hover {
+	color: var(--text);
+	text-decoration: underline;
+}
+
+/* ── RSS logo ────────────────────────────────────────────────── */
+a.rss_logo {
+	float: right;
+	padding: 4px 8px;
+	border-radius: var(--radius);
+	border: 1px solid #f55200;
+	color: #ffffff;
+	background-color: #f55200;
+	font-weight: 700;
+	font-family: sans-serif;
+	font-size: 11px;
+	text-align: center;
+	text-decoration: none;
+	transition: opacity 0.15s ease;
+}
+
+a.rss_logo:hover {
+	opacity: 0.8;
+}
+
+a.rss_logo.generic {
+	background-color: #cc7000;
+	border-color: #cc7000;
+}
+
+a.rss_logo.generic:hover {
+	opacity: 0.8;
+}
+
+/* ── Ref badges (branch / tag / remote) ─────────────────────── */
+span.refs span {
+	padding: 1px 8px;
+	font-size: 11px;
+	font-weight: 600;
+	border: 1px solid;
+	border-radius: 999px;
+	background-color: var(--ref-bg);
+	border-color: var(--ref-border);
+	color: var(--accent);
+	margin-right: 3px;
+	display: inline-block;
+}
+
+span.refs span a {
+	text-decoration: none;
+	color: inherit;
+}
+
+span.refs span a:hover {
+	text-decoration: underline;
+}
+
+span.refs span.indirect {
+	font-style: italic;
+	opacity: 0.75;
+}
+
+span.refs span.ref {
+	background-color: var(--ref-bg);
+	border-color: var(--ref-border);
+	color: #79c0ff;
+}
+
+span.refs span.tag {
+	background-color: var(--tag-bg);
+	border-color: var(--tag-border);
+	color: #f0883e;
+}
+
+span.refs span.head {
+	background-color: var(--head-bg);
+	border-color: var(--head-border);
+	color: var(--add);
+}
+
+/* ── Misc ────────────────────────────────────────────────────── */
+span.cntrl {
+	border: 1px dashed var(--border);
+	padding: 0 2px;
+	margin: 0 2px;
+	color: var(--rem);
+	font-family: ui-monospace, monospace;
+}
+
+span.atnight {
+	color: var(--rem);
+}
+
+span.match {
+	color: var(--rem);
+	font-weight: bold;
+}
+
+div.binary {
+	font-style: italic;
+	color: var(--muted);
+}
+
+div.remote {
+	margin: 6px;
+	border: 1px solid var(--border);
+	border-radius: var(--radius);
+	display: inline-block;
+	background-color: var(--surface);
+}
+
+/* ── Timezone popup ──────────────────────────────────────────── */
+.popup {
+	position: absolute;
+	top: 0;
+	left: 0;
+	border: 1px solid var(--border);
+	border-radius: var(--radius);
+	padding: 6px;
+	background-color: var(--surface);
+	box-shadow: var(--shadow);
+	font-style: normal;
+	color: var(--text);
+	cursor: auto;
+}
+
+.close-button {
+	position: absolute;
+	top: 2px;
+	right: 2px;
+	border: 1px solid var(--border);
+	border-radius: 4px;
+	margin: 1px;
+	padding-bottom: 2px;
+	width: 16px;
+	height: 14px;
+	font-size: 10px;
+	font-weight: bold;
+	text-align: center;
+	background-color: var(--surface2);
+	color: var(--muted);
+	cursor: pointer;
+}
+
+.close-button:hover {
+	background-color: var(--rem-bg);
+	color: var(--rem);
+}
+
+/* ── Syntax highlighting ─────────────────────────────────────── */
+.num  { color: #79c0ff; }
+.esc  { color: var(--chunk); }
+.str  { color: #a5d6ff; }
+.dstr { color: #7ee787; }
+.slc  { color: var(--muted); font-style: italic; }
+.com  { color: var(--muted); font-style: italic; }
+.dir  { color: #7ee787; }
+.sym  { color: var(--text); }
+.line { color: var(--muted); }
+.kwa  { color: var(--chunk); font-weight: bold; }
+.kwb  { color: #ff7b72; }
+.kwc  { color: var(--chunk); font-weight: bold; }
+.kwd  { color: #79c0ff; }
