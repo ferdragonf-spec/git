@@ -545,15 +545,6 @@ button:disabled {
 	opacity: 0.5;
 	cursor: not-allowed;
 }
-	display: grid;
-	grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
-.mini-card {
-	border-radius: var(--radius-md);
-	padding: 18px 14px;
-	text-align: center;
-}
 
 .steps,
 .tip-grid,

@@ -20,6 +20,8 @@
 
 	const HF_MODEL = 'black-forest-labs/FLUX.1-schnell';
 	const HF_API_URL = `https://api-inference.huggingface.co/models/${HF_MODEL}`;
+	const MIN_STEPS = 4;
+	const STEP_RANGE = 4;
 
 	const defaults = {
 		prompt: promptInput.value,
@@ -110,7 +112,7 @@
 		statusOutput.textContent = 'En proceso…';
 
 		const prompt = buildFullPrompt();
-		const numSteps = Math.round(4 + (Number(strengthRange.value) / 100) * 4);
+		const numSteps = Math.round(MIN_STEPS + (Number(strengthRange.value) / 100) * STEP_RANGE);
 
 		try {
 			const response = await fetch(HF_API_URL, {
