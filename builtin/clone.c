@@ -69,6 +69,7 @@ static int option_no_checkout, option_bare, option_mirror, option_single_branch 
 static int option_local = -1, option_no_hardlinks, option_shared;
 static int option_tags = 1; /* default enabled */
 static int option_shallow_submodules;
+static int option_bot;
 static int config_reject_shallow = -1;    /* unspecified */
 static char *remote_name = NULL;
 static char *option_branch = NULL;
@@ -991,6 +992,8 @@ int cmd_clone(int argc,
 			 N_("initialize sparse-checkout file to include only files at root")),
 		OPT_STRING(0, "bundle-uri", &bundle_uri,
 			   N_("uri"), N_("a URI for downloading bundles before fetching from origin remote")),
+		OPT_BOOL(0, "bot", &option_bot,
+			 N_("suppress all output and disable terminal prompts for automated use")),
 		OPT_END()
 	};
 
@@ -1005,6 +1008,11 @@ int cmd_clone(int argc,
 
 	argc = parse_options(argc, argv, prefix, builtin_clone_options,
 			     builtin_clone_usage, 0);
+
+	if (option_bot) {
+		option_verbosity = -1;
+		setenv("GIT_TERMINAL_PROMPT", "0", 1);
+	}
 
 	if (argc > 2)
 		usage_msg_opt(_("Too many arguments."),
