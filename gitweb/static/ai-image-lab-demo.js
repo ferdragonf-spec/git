@@ -1,6 +1,6 @@
 (() => {
 	const form = document.getElementById('generator-form');
-	const fileInput = document.getElementById('source-image');
+	const apiKeyInput = document.getElementById('hf-api-key');
 	const promptInput = document.getElementById('prompt-input');
 	const strengthRange = document.getElementById('strength-range');
 	const strengthOutput = document.getElementById('strength-output');
@@ -8,13 +8,18 @@
 	const resultDescription = document.getElementById('result-description');
 	const resultStyleBadge = document.getElementById('result-style-badge');
 	const statusStyle = document.getElementById('status-style');
-	const statusSeed = document.getElementById('status-seed');
+	const statusOutput = document.getElementById('status-output');
+	const generateBtn = document.getElementById('generate-btn');
 	const resetButton = document.getElementById('reset-demo');
 	const quickPrompts = document.querySelectorAll('[data-prompt]');
 	const stylePills = document.querySelectorAll('.style-pill');
-	const miniCards = document.querySelectorAll('.mini-card');
-	const previews = document.querySelectorAll('[data-preview]');
-	const uploadZone = document.querySelector('.upload-zone');
+	const resultPlaceholder = document.getElementById('result-placeholder');
+	const resultLoading = document.getElementById('result-loading');
+	const resultError = document.getElementById('result-error');
+	const resultImage = document.getElementById('result-image');
+
+	const HF_MODEL = 'black-forest-labs/FLUX.1-schnell';
+	const HF_API_URL = `https://api-inference.huggingface.co/models/${HF_MODEL}`;
 
 	const defaults = {
 		prompt: promptInput.value,
@@ -22,20 +27,17 @@
 		style: 'Editorial',
 		theme: 'editorial'
 	};
-	const baseSeed = 1000;
-	const seedMultiplier = 17;
+
+	const stylePromptSuffixes = {
+		editorial: ', editorial photography, soft diffused light, premium',
+		neon: ', neon lighting, high contrast, chromatic glow, night atmosphere',
+		sketch: ', digital illustration, soft lines, conceptual art style'
+	};
 
 	let selectedStyle = defaults.style;
 	let selectedTheme = defaults.theme;
-
-	const themeGradients = {
-		editorial:
-			'radial-gradient(circle at top left, rgba(122, 162, 255, 0.72), transparent 35%), radial-gradient(circle at bottom right, rgba(169, 89, 255, 0.65), transparent 30%), linear-gradient(135deg, #11193a 0%, #090d18 100%)',
-		neon:
-			'radial-gradient(circle at top left, rgba(16, 255, 220, 0.75), transparent 32%), radial-gradient(circle at bottom right, rgba(255, 0, 150, 0.72), transparent 34%), linear-gradient(135deg, #0f1232 0%, #080811 100%)',
-		sketch:
-			'radial-gradient(circle at top left, rgba(255, 255, 255, 0.55), transparent 36%), radial-gradient(circle at bottom right, rgba(154, 174, 202, 0.5), transparent 34%), linear-gradient(135deg, #242c3d 0%, #10151d 100%)'
-	};
+	let isGenerating = false;
+	let lastObjectUrl = null;
 
 	function updateSummary() {
 		const strength = `${strengthRange.value}%`;
@@ -43,9 +45,7 @@
 		resultDescription.textContent = promptInput.value.trim() || defaults.prompt;
 		resultStyleBadge.textContent = selectedStyle;
 		statusStyle.textContent = selectedStyle;
-		statusSeed.textContent = `Seed ${baseSeed + Number(strengthRange.value) * seedMultiplier}`;
 		strengthOutput.value = strength;
-		document.documentElement.style.setProperty('--preview-gradient', themeGradients[selectedTheme]);
 	}
 
 	function setStyle(button) {
@@ -56,35 +56,114 @@
 		updateSummary();
 	}
 
-	function selectVariant(card) {
-		miniCards.forEach((item) => item.classList.remove('is-selected'));
-		card.classList.add('is-selected');
+	function showPlaceholder() {
+		resultPlaceholder.hidden = false;
+		resultLoading.hidden = true;
+		resultError.hidden = true;
+		resultImage.hidden = true;
 	}
 
-	function setImage(source) {
-		previews.forEach((preview) => {
-			preview.style.setProperty('--preview-image', `url("${source}")`);
-			preview.classList.add('has-image');
-		});
+	function showLoading() {
+		resultPlaceholder.hidden = true;
+		resultLoading.hidden = false;
+		resultError.hidden = true;
+		resultImage.hidden = true;
 	}
 
-	function clearImage() {
-		previews.forEach((preview) => {
-			preview.style.removeProperty('--preview-image');
-			preview.classList.remove('has-image');
-		});
+	function showError(message) {
+		resultPlaceholder.hidden = true;
+		resultLoading.hidden = true;
+		resultError.hidden = false;
+		resultError.textContent = message;
+		resultImage.hidden = true;
 	}
 
-	function handleFile(file) {
-		if (!file || !file.type.startsWith('image/')) {
+	function showImage(url) {
+		resultPlaceholder.hidden = true;
+		resultLoading.hidden = true;
+		resultError.hidden = true;
+		resultImage.src = url;
+		resultImage.hidden = false;
+	}
+
+	function buildFullPrompt() {
+		const base = promptInput.value.trim() || defaults.prompt;
+		const suffix = stylePromptSuffixes[selectedTheme] || '';
+		return base + suffix;
+	}
+
+	async function generateImage() {
+		const apiKey = apiKeyInput.value.trim();
+		if (!apiKey) {
+			showError('Introduce tu clave de API de Hugging Face antes de generar.');
 			return;
 		}
 
-		const reader = new FileReader();
-		reader.onload = ({ target }) => {
-			setImage(target.result);
-		};
-		reader.readAsDataURL(file);
+		if (isGenerating) {
+			return;
+		}
+
+		isGenerating = true;
+		generateBtn.disabled = true;
+		generateBtn.textContent = 'Generando…';
+		showLoading();
+		statusOutput.textContent = 'En proceso…';
+
+		const prompt = buildFullPrompt();
+		const numSteps = Math.round(4 + (Number(strengthRange.value) / 100) * 4);
+
+		try {
+			const response = await fetch(HF_API_URL, {
+				method: 'POST',
+				headers: {
+					'Authorization': 'Bearer ' + apiKey,
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					inputs: prompt,
+					parameters: {
+						num_inference_steps: numSteps
+					}
+				})
+			});
+
+			if (!response.ok) {
+				let errorMessage = `Error ${response.status}`;
+				try {
+					const errorData = await response.json();
+					if (errorData.error) {
+						errorMessage = errorData.error;
+					}
+					if (response.status === 503 && errorData.estimated_time) {
+						errorMessage = `El modelo está cargando. Inténtalo de nuevo en ${Math.ceil(errorData.estimated_time)}s.`;
+					}
+				} catch (_) {
+					/* use default errorMessage */
+				}
+				if (response.status === 401) {
+					errorMessage = 'Clave de API no válida. Comprueba tu token de Hugging Face.';
+				}
+				showError(errorMessage);
+				statusOutput.textContent = 'Error';
+				return;
+			}
+
+			const blob = await response.blob();
+			if (lastObjectUrl) {
+				URL.revokeObjectURL(lastObjectUrl);
+			}
+			lastObjectUrl = URL.createObjectURL(blob);
+			showImage(lastObjectUrl);
+			statusOutput.textContent = 'Completado';
+			updateSummary();
+		} catch (error) {
+			showError(`Error de red: ${error.message}`);
+			statusOutput.textContent = 'Error';
+		} finally {
+			isGenerating = false;
+			generateBtn.disabled = false;
+			generateBtn.textContent = 'Generar imagen';
+		}
 	}
 
 	quickPrompts.forEach((button) => {
@@ -98,45 +177,28 @@
 		button.addEventListener('click', () => setStyle(button));
 	});
 
-	miniCards.forEach((card) => {
-		card.addEventListener('click', () => selectVariant(card));
-	});
-
 	strengthRange.addEventListener('input', updateSummary);
 	promptInput.addEventListener('input', updateSummary);
 
-	fileInput.addEventListener('change', (event) => {
-		handleFile(event.target.files[0]);
-	});
-
-	uploadZone.addEventListener('dragover', (event) => {
-		event.preventDefault();
-		uploadZone.classList.add('is-dragover');
-	});
-
-	uploadZone.addEventListener('dragleave', () => {
-		uploadZone.classList.remove('is-dragover');
-	});
-
-	uploadZone.addEventListener('drop', (event) => {
-		event.preventDefault();
-		uploadZone.classList.remove('is-dragover');
-		handleFile(event.dataTransfer.files[0]);
-	});
-
 	form.addEventListener('submit', (event) => {
 		event.preventDefault();
-		updateSummary();
-		selectVariant(document.querySelector('.mini-card'));
+		generateImage();
 	});
 
 	resetButton.addEventListener('click', () => {
+		if (isGenerating) {
+			return;
+		}
 		form.reset();
 		promptInput.value = defaults.prompt;
 		strengthRange.value = defaults.strength;
 		setStyle(document.querySelector('[data-theme="editorial"]'));
-		selectVariant(document.querySelector('.mini-card'));
-		clearImage();
+		showPlaceholder();
+		statusOutput.textContent = '—';
+		if (lastObjectUrl) {
+			URL.revokeObjectURL(lastObjectUrl);
+			lastObjectUrl = null;
+		}
 		updateSummary();
 	});
 
