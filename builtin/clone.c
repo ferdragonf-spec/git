@@ -1012,6 +1012,8 @@ int cmd_clone(int argc,
 	if (option_bot) {
 		option_verbosity = -1;
 		setenv("GIT_TERMINAL_PROMPT", "0", 1);
+		setenv("GIT_ASKPASS", "", 1);
+		setenv("SSH_ASKPASS", "", 1);
 	}
 
 	if (argc > 2)
