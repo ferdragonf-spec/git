@@ -136,9 +136,10 @@ objects from the source repository into a pack in the cloned repository.
 
 `--bot`::
 	Optimize for automated/bot use: suppress all output (implies `--quiet`)
-	and disable terminal prompts for credentials by setting
-	`GIT_TERMINAL_PROMPT=0`. This is useful for CI/CD pipelines and
-	scripts where no user interaction is possible.
+	and disable all interactive credential prompts by setting
+	`GIT_TERMINAL_PROMPT=0`, `GIT_ASKPASS`, and `SSH_ASKPASS` to empty
+	values. This is useful for CI/CD pipelines and scripts where no user
+	interaction is possible.
 
 `-v`::
 `--verbose`::
