@@ -3,18 +3,18 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>AI Image Lab Demo</title>
-	<meta name="description" content="Maqueta original HTML, CSS y JS para una experiencia de transformación de imágenes con IA.">
+	<title>AI Image Lab</title>
+	<meta name="description" content="Genera imágenes con IA usando Hugging Face Inference API. Introduce tu prompt, elige un estilo y obtén resultados reales.">
 	<link rel="stylesheet" href="ai-image-lab-demo.css">
 </head>
 <body>
 	<div class="site-shell">
 		<header class="topbar">
-			<a class="brand" href="#hero" aria-label="AI Image Lab Demo">
+			<a class="brand" href="#hero" aria-label="AI Image Lab">
 				<span class="brand-mark">AI</span>
 				<span class="brand-copy">
 					<strong>Image Lab</strong>
-					<small>Demo original</small>
+					<small>Hugging Face API</small>
 				</span>
 			</a>
 			<nav class="topnav" aria-label="Principal">
@@ -23,43 +23,42 @@
 				<a href="#tips">Consejos</a>
 				<a href="#examples">Ejemplos</a>
 			</nav>
-			<a class="button button-ghost" href="#studio">Probar maqueta</a>
+			<a class="button button-ghost" href="#studio">Generar imagen</a>
 		</header>
 
 		<main>
 			<section class="hero" id="hero">
 				<div class="hero-copy">
-					<p class="eyebrow">Diseño original • HTML/CSS/JS</p>
-					<h1>Convierte una imagen en nuevas versiones creativas con una interfaz clara y moderna</h1>
+					<p class="eyebrow">Powered by Hugging Face • HTML/CSS/JS</p>
+					<h1>Genera imágenes con IA a partir de tus prompts en segundos</h1>
 					<p class="hero-text">
-						Esta demo recrea la idea de un generador image-to-image sin copiar textos,
-						gráficos ni estructura exacta. Incluye una zona de subida, controles de estilo,
-						una vista previa interactiva y secciones informativas.
+						Conecta tu clave de Hugging Face, describe el resultado que quieres
+						y obtén imágenes generadas por IA en tiempo real directamente en tu navegador.
 					</p>
 					<div class="hero-actions">
 						<a class="button" href="#studio">Abrir estudio</a>
 						<a class="button button-ghost" href="#workflow">Ver flujo</a>
 					</div>
 					<ul class="hero-metrics" aria-label="Características">
-						<li><strong>100%</strong><span>contenidos originales</span></li>
+						<li><strong>Real</strong><span>generación con IA</span></li>
 						<li><strong>3</strong><span>estilos rápidos</span></li>
-						<li><strong>1</strong><span>preview interactivo</span></li>
+						<li><strong>HF</strong><span>Inference API</span></li>
 					</ul>
 				</div>
 
 				<div class="hero-preview">
 					<div class="preview-stage">
 						<div class="preview-card preview-card-before">
-							<span class="preview-label">Imagen base</span>
+							<span class="preview-label">Tu prompt</span>
 							<div class="preview-surface" data-preview="source">
 								<div class="preview-placeholder">
-									<span>Sube una imagen o usa la demo</span>
+									<span>Describe la imagen que quieres</span>
 								</div>
 							</div>
 						</div>
 						<div class="preview-arrow" aria-hidden="true">→</div>
 						<div class="preview-card preview-card-after">
-							<span class="preview-label">Resultado sugerido</span>
+							<span class="preview-label">Imagen generada</span>
 							<div class="preview-surface preview-surface-generated" data-preview="result">
 								<div class="preview-overlay"></div>
 								<div class="preview-badge" id="result-style-badge">Editorial</div>
@@ -72,16 +71,22 @@
 			<section class="studio" id="studio">
 				<div class="section-heading">
 					<p class="eyebrow">Estudio</p>
-					<h2>Prepara la transformación</h2>
-					<p>Ajusta el prompt, el estilo y la intensidad para ver cómo cambia la propuesta visual.</p>
+					<h2>Genera una imagen</h2>
+					<p>Introduce tu clave de Hugging Face, escribe un prompt y pulsa Generar para obtener una imagen real.</p>
 				</div>
 
 				<div class="studio-grid">
 					<form class="control-panel" id="generator-form">
-						<label class="upload-zone" for="source-image">
-							<input id="source-image" name="source-image" type="file" accept="image/*">
-							<span class="upload-title">Arrastra una imagen o haz clic para cargarla</span>
-							<span class="upload-copy">PNG, JPG o WEBP. La demo usa la imagen solo en tu navegador.</span>
+						<label class="field">
+							<span>Clave de API de Hugging Face</span>
+							<input
+								id="hf-api-key"
+								name="hf-api-key"
+								type="password"
+								autocomplete="off"
+								placeholder="hf_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+							>
+							<small class="field-hint">Tu clave se usa solo en tu navegador y no se envía a ningún servidor propio. Consíguela en <a href="https://huggingface.co/settings/tokens" target="_blank" rel="noopener noreferrer">huggingface.co/settings/tokens</a>.</small>
 						</label>
 
 						<label class="field">
@@ -113,16 +118,28 @@
 						</label>
 
 						<div class="panel-actions">
-							<button type="submit" class="button">Generar preview</button>
+							<button type="submit" class="button" id="generate-btn">Generar imagen</button>
 							<button type="button" class="button button-ghost" id="reset-demo">Restablecer</button>
 						</div>
 					</form>
 
 					<aside class="result-panel" aria-live="polite">
 						<div class="result-summary">
-							<p class="eyebrow">Resumen</p>
+							<p class="eyebrow">Resultado</p>
 							<h3 id="result-title">Editorial · 62% intensidad</h3>
 							<p id="result-description">Retrato editorial con luz suave, fondo degradado y textura sutil.</p>
+						</div>
+
+						<div class="result-image-wrap" id="result-image-wrap">
+							<div class="result-placeholder" id="result-placeholder">
+								<span>El resultado aparecerá aquí</span>
+							</div>
+							<div class="result-loading" id="result-loading" hidden>
+								<span class="spinner" aria-hidden="true"></span>
+								<span>Generando imagen…</span>
+							</div>
+							<div class="result-error" id="result-error" hidden role="alert"></div>
+							<img id="result-image" class="result-img" alt="Imagen generada por IA" hidden>
 						</div>
 
 						<div class="status-card">
@@ -131,19 +148,13 @@
 								<strong id="status-style">Editorial</strong>
 							</div>
 							<div class="status-row">
-								<span>Variación</span>
-								<strong id="status-seed">Seed 2048</strong>
+								<span>Modelo</span>
+								<strong id="status-model">FLUX.1-schnell</strong>
 							</div>
 							<div class="status-row">
 								<span>Salida</span>
-								<strong>Mockup interactivo</strong>
+								<strong id="status-output">—</strong>
 							</div>
-						</div>
-
-						<div class="mini-gallery" id="mini-gallery">
-							<div class="mini-card is-selected" data-variant="Suave">Suave</div>
-							<div class="mini-card" data-variant="Contraste">Contraste</div>
-							<div class="mini-card" data-variant="Fondo">Fondo</div>
 						</div>
 					</aside>
 				</div>
@@ -152,13 +163,13 @@
 			<section class="workflow" id="workflow">
 				<div class="section-heading">
 					<p class="eyebrow">Proceso</p>
-					<h2>Cómo funciona la maqueta</h2>
+					<h2>Cómo funciona</h2>
 				</div>
 				<div class="steps">
 					<article class="step-card">
 						<span class="step-index">01</span>
-						<h3>Sube una referencia</h3>
-						<p>Carga una imagen propia o mantén la demo visual para explorar la interfaz.</p>
+						<h3>Introduce tu clave HF</h3>
+						<p>Obtén un token de acceso gratuito en Hugging Face y pégalo en el campo de clave de API.</p>
 					</article>
 					<article class="step-card">
 						<span class="step-index">02</span>
@@ -167,8 +178,8 @@
 					</article>
 					<article class="step-card">
 						<span class="step-index">03</span>
-						<h3>Revisa variantes</h3>
-						<p>El panel derecho resume la salida y muestra pequeñas variaciones de enfoque.</p>
+						<h3>Obtén el resultado real</h3>
+						<p>La página llama a la Inference API de Hugging Face y muestra la imagen generada directamente.</p>
 					</article>
 				</div>
 			</section>
