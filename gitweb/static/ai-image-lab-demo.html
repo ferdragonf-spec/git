@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>AI Image Lab Demo</title>
+	<meta name="description" content="Maqueta original HTML, CSS y JS para una experiencia de transformación de imágenes con IA.">
+	<link rel="stylesheet" href="ai-image-lab-demo.css">
+</head>
+<body>
+	<div class="site-shell">
+		<header class="topbar">
+			<a class="brand" href="#hero" aria-label="AI Image Lab Demo">
+				<span class="brand-mark">AI</span>
+				<span class="brand-copy">
+					<strong>Image Lab</strong>
+					<small>Demo original</small>
+				</span>
+			</a>
+			<nav class="topnav" aria-label="Principal">
+				<a href="#studio">Estudio</a>
+				<a href="#workflow">Proceso</a>
+				<a href="#tips">Consejos</a>
+				<a href="#examples">Ejemplos</a>
+			</nav>
+			<a class="button button-ghost" href="#studio">Probar maqueta</a>
+		</header>
+
+		<main>
+			<section class="hero" id="hero">
+				<div class="hero-copy">
+					<p class="eyebrow">Diseño original • HTML/CSS/JS</p>
+					<h1>Convierte una imagen en nuevas versiones creativas con una interfaz clara y moderna</h1>
+					<p class="hero-text">
+						Esta demo recrea la idea de un generador image-to-image sin copiar textos,
+						gráficos ni estructura exacta. Incluye una zona de subida, controles de estilo,
+						una vista previa interactiva y secciones informativas.
+					</p>
+					<div class="hero-actions">
+						<a class="button" href="#studio">Abrir estudio</a>
+						<a class="button button-ghost" href="#workflow">Ver flujo</a>
+					</div>
+					<ul class="hero-metrics" aria-label="Características">
+						<li><strong>100%</strong><span>contenidos originales</span></li>
+						<li><strong>3</strong><span>estilos rápidos</span></li>
+						<li><strong>1</strong><span>preview interactivo</span></li>
+					</ul>
+				</div>
+
+				<div class="hero-preview">
+					<div class="preview-stage">
+						<div class="preview-card preview-card-before">
+							<span class="preview-label">Imagen base</span>
+							<div class="preview-surface" data-preview="source">
+								<div class="preview-placeholder">
+									<span>Sube una imagen o usa la demo</span>
+								</div>
+							</div>
+						</div>
+						<div class="preview-arrow" aria-hidden="true">→</div>
+						<div class="preview-card preview-card-after">
+							<span class="preview-label">Resultado sugerido</span>
+							<div class="preview-surface preview-surface-generated" data-preview="result">
+								<div class="preview-overlay"></div>
+								<div class="preview-badge" id="result-style-badge">Editorial</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="studio" id="studio">
+				<div class="section-heading">
+					<p class="eyebrow">Estudio</p>
+					<h2>Prepara la transformación</h2>
+					<p>Ajusta el prompt, el estilo y la intensidad para ver cómo cambia la propuesta visual.</p>
+				</div>
+
+				<div class="studio-grid">
+					<form class="control-panel" id="generator-form">
+						<label class="upload-zone" for="source-image">
+							<input id="source-image" name="source-image" type="file" accept="image/*">
+							<span class="upload-title">Arrastra una imagen o haz clic para cargarla</span>
+							<span class="upload-copy">PNG, JPG o WEBP. La demo usa la imagen solo en tu navegador.</span>
+						</label>
+
+						<label class="field">
+							<span>Describe el resultado</span>
+							<textarea id="prompt-input" rows="4">Retrato editorial con luz suave, fondo degradado y textura sutil.</textarea>
+						</label>
+
+						<div class="field">
+							<span>Atajos de prompt</span>
+							<div class="quick-prompts">
+								<button type="button" class="chip" data-prompt="Estilo cinematográfico con contraste suave y tonos cálidos.">Cinemático</button>
+								<button type="button" class="chip" data-prompt="Ilustración digital limpia con volumen suave y paleta vibrante.">Ilustración</button>
+								<button type="button" class="chip" data-prompt="Campaña de moda con luz difusa, fondo neutro y enfoque premium.">Moda</button>
+							</div>
+						</div>
+
+						<div class="field">
+							<span>Estilo visual</span>
+							<div class="style-options" role="radiogroup" aria-label="Estilo visual">
+								<button type="button" class="style-pill is-active" data-style="Editorial" data-theme="editorial">Editorial</button>
+								<button type="button" class="style-pill" data-style="Neón" data-theme="neon">Neón</button>
+								<button type="button" class="style-pill" data-style="Sketch" data-theme="sketch">Sketch</button>
+							</div>
+						</div>
+
+						<label class="field">
+							<span>Intensidad creativa <output id="strength-output" for="strength-range">62%</output></span>
+							<input id="strength-range" type="range" min="20" max="100" value="62">
+						</label>
+
+						<div class="panel-actions">
+							<button type="submit" class="button">Generar preview</button>
+							<button type="button" class="button button-ghost" id="reset-demo">Restablecer</button>
+						</div>
+					</form>
+
+					<aside class="result-panel" aria-live="polite">
+						<div class="result-summary">
+							<p class="eyebrow">Resumen</p>
+							<h3 id="result-title">Editorial · 62% intensidad</h3>
+							<p id="result-description">Retrato editorial con luz suave, fondo degradado y textura sutil.</p>
+						</div>
+
+						<div class="status-card">
+							<div class="status-row">
+								<span>Modo</span>
+								<strong id="status-style">Editorial</strong>
+							</div>
+							<div class="status-row">
+								<span>Variación</span>
+								<strong id="status-seed">Seed 2048</strong>
+							</div>
+							<div class="status-row">
+								<span>Salida</span>
+								<strong>Mockup interactivo</strong>
+							</div>
+						</div>
+
+						<div class="mini-gallery" id="mini-gallery">
+							<div class="mini-card is-selected" data-variant="Suave">Suave</div>
+							<div class="mini-card" data-variant="Contraste">Contraste</div>
+							<div class="mini-card" data-variant="Fondo">Fondo</div>
+						</div>
+					</aside>
+				</div>
+			</section>
+
+			<section class="workflow" id="workflow">
+				<div class="section-heading">
+					<p class="eyebrow">Proceso</p>
+					<h2>Cómo funciona la maqueta</h2>
+				</div>
+				<div class="steps">
+					<article class="step-card">
+						<span class="step-index">01</span>
+						<h3>Sube una referencia</h3>
+						<p>Carga una imagen propia o mantén la demo visual para explorar la interfaz.</p>
+					</article>
+					<article class="step-card">
+						<span class="step-index">02</span>
+						<h3>Define la dirección</h3>
+						<p>Usa un prompt breve, elige un estilo y ajusta la intensidad de cambio.</p>
+					</article>
+					<article class="step-card">
+						<span class="step-index">03</span>
+						<h3>Revisa variantes</h3>
+						<p>El panel derecho resume la salida y muestra pequeñas variaciones de enfoque.</p>
+					</article>
+				</div>
+			</section>
+
+			<section class="tips" id="tips">
+				<div class="section-heading">
+					<p class="eyebrow">Consejos</p>
+					<h2>Buenas prácticas para prompts más claros</h2>
+				</div>
+				<div class="tip-grid">
+					<article class="tip-card">
+						<h3>Define la atmósfera</h3>
+						<p>Menciona luz, color y contexto para guiar el resultado con menos ambigüedad.</p>
+					</article>
+					<article class="tip-card">
+						<h3>Limita el alcance</h3>
+						<p>Es mejor pedir un solo estilo fuerte que mezclar demasiadas ideas en una frase.</p>
+					</article>
+					<article class="tip-card">
+						<h3>Ajusta por iteración</h3>
+						<p>Cambia primero el prompt y luego la intensidad para entender el impacto de cada control.</p>
+					</article>
+				</div>
+			</section>
+
+			<section class="examples" id="examples">
+				<div class="section-heading">
+					<p class="eyebrow">Ejemplos</p>
+					<h2>Tres direcciones visuales originales</h2>
+				</div>
+				<div class="example-grid">
+					<article class="example-card theme-editorial">
+						<h3>Editorial</h3>
+						<p>Retratos limpios, luz difusa y una composición premium.</p>
+					</article>
+					<article class="example-card theme-neon">
+						<h3>Neón</h3>
+						<p>Contraste fuerte, brillos cromáticos y energía nocturna.</p>
+					</article>
+					<article class="example-card theme-sketch">
+						<h3>Sketch</h3>
+						<p>Acabado ilustrado, líneas suaves y sensación conceptual.</p>
+					</article>
+				</div>
+			</section>
+		</main>
+	</div>
+
+	<script src="ai-image-lab-demo.js"></script>
+</body>
+</html>
