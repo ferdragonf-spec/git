@@ -22,6 +22,8 @@
 		style: 'Editorial',
 		theme: 'editorial'
 	};
+	const baseSeed = 1000;
+	const seedMultiplier = 17;
 
 	let selectedStyle = defaults.style;
 	let selectedTheme = defaults.theme;
@@ -41,7 +43,7 @@
 		resultDescription.textContent = promptInput.value.trim() || defaults.prompt;
 		resultStyleBadge.textContent = selectedStyle;
 		statusStyle.textContent = selectedStyle;
-		statusSeed.textContent = `Seed ${1000 + Number(strengthRange.value) * 17}`;
+		statusSeed.textContent = `Seed ${baseSeed + Number(strengthRange.value) * seedMultiplier}`;
 		strengthOutput.value = strength;
 		document.documentElement.style.setProperty('--preview-gradient', themeGradients[selectedTheme]);
 	}
